@@ -33,8 +33,10 @@ function GeneratePage() {
     try {
       console.log("🚀 Calling OpenAI API...");
 
+      const API_URL = import.meta.env.VITE_API_URL || "https://cover-letter-buddy-production.up.railway.app";
+      
       const response = await fetch(
-        "http://localhost:3002/api/generate-cover-letter",
+        `${API_URL}/api/generate-cover-letter`,
         {
           method: "POST",
           headers: {
@@ -62,7 +64,7 @@ function GeneratePage() {
 
       // Show error to user
       setCoverLetter(
-        `Error: ${error.message}\n\nPlease check that:\n1. Backend server is running (http://localhost:3002)\n2. OpenAI API key is configured\n3. You have sufficient OpenAI credits`
+        `Error: ${error.message}\n\nPlease check that:\n1. Backend server is running (https://cover-letter-buddy-production.up.railway.app)\n2. OpenAI API key is configured\n3. You have sufficient OpenAI credits`
       );
     } finally {
       setIsGenerating(false);

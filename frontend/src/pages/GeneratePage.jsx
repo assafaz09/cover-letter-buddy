@@ -33,22 +33,21 @@ function GeneratePage() {
     try {
       console.log("🚀 Calling OpenAI API...");
 
-      const API_URL = import.meta.env.VITE_API_URL || "https://cover-letter-buddy-production.up.railway.app";
-      
-      const response = await fetch(
-        `${API_URL}/api/generate-cover-letter`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userInfo,
-            jobInfo,
-            letterOptions,
-          }),
-        }
-      );
+      const API_URL =
+        import.meta.env.VITE_API_URL ||
+        "https://cover-letter-buddy-production.up.railway.app";
+
+      const response = await fetch(`${API_URL}/api/generate-cover-letter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userInfo,
+          jobInfo,
+          letterOptions,
+        }),
+      });
 
       const data = await response.json();
 

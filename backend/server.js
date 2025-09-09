@@ -2,12 +2,18 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
+
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -17,6 +23,9 @@ const openai = new OpenAI({
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the frontend build
+app.use(express.static(path.join(__dirname, "frontend/dist")));
 
 // Routes
 app.get("/api/health", (req, res) => {
@@ -251,12 +260,18 @@ app.use((error, req, res, next) => {
   });
 });
 
-// 404 handler - catch all other routes
-app.all("*", (req, res) => {
-  res.status(404).json({
-    error: "Route not found",
-    availableRoutes: ["GET /api/health", "POST /api/generate-cover-letter"],
-  });
+// Catch all handler - serve React app for non-API routes
+app.get("*", (req, res) => {
+  // If it's an API route that doesn't exist, return 404 JSON
+  if (req.path.startsWith("/api/")) {
+    return res.status(404).json({
+      error: "Route not found",
+      availableRoutes: ["GET /api/health", "POST /api/generate-cover-letter"],
+    });
+  }
+
+  // Otherwise, serve the React app
+  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
 });
 
 // Start server

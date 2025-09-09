@@ -1,4 +1,3 @@
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -25,8 +24,9 @@ const openai = new OpenAI({
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the frontend build
-app.use(express.static(path.join(__dirname, "frontend/dist")));
+// Serve static files from the frontend build (only if running from root)
+// For backend-only deployment, we don't need this
+// app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // Routes
 app.get("/api/health", (req, res) => {
@@ -271,8 +271,11 @@ app.get("*", (req, res) => {
     });
   }
 
-  // Otherwise, serve the React app
-  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+  // For API-only backend, return 404 for non-API routes
+  res.status(404).json({
+    error: "Route not found - this is an API-only backend",
+    availableRoutes: ["GET /api/health", "POST /api/generate-cover-letter"],
+  });
 });
 
 // Start server

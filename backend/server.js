@@ -104,7 +104,7 @@ Best regards,
 ${userInfo.fullName || "Your Name"}
 
 ---
-🚨 DEMO MODE: Micro cover letter (OpenAI quota exceeded).`;
+ DEMO MODE: Micro cover letter (OpenAI quota exceeded).`;
 
         res.json({
           success: true,
@@ -117,7 +117,7 @@ ${userInfo.fullName || "Your Name"}
       }
     }
   } catch (error) {
-    console.error("❌ Error generating cover letter:", error);
+    console.error(" Error generating cover letter:", error);
 
     if (error.code === "insufficient_quota") {
       return res.status(402).json({
@@ -244,7 +244,7 @@ Format the cover letter as a complete, ready-to-send document.
 
 // Error handling middleware
 app.use((error, req, res, next) => {
-  console.error("💥 Unhandled error:", error);
+  console.error(" Unhandled error:", error);
   res.status(500).json({
     error: "Internal server error",
     details: process.env.NODE_ENV === "development" ? error.message : undefined,
@@ -261,8 +261,8 @@ app.all("*", (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+  console.log(` Server running on http://localhost:${PORT}`);
+  console.log(` Health check: http://localhost:${PORT}/api/health`);
   const apiKey = process.env.OPENAI_API_KEY;
-  console.log(`🤖 OpenAI API Key: ${apiKey ? "✅ Configured" : "❌ Missing"}`);
+  console.log(` OpenAI API Key: ${apiKey ? "Configured" : " Missing"}`);
 });

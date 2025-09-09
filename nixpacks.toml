@@ -1,11 +1,11 @@
 [phases.setup]
-nixpkgs = ['nodejs_18', 'npm-9_x']
+nixpkgs = ['nodejs_20', 'npm-10_x']
 
 [phases.install]
-cmds = ['npm ci --only=production']
+cmds = ['npm ci']
 
 [phases.build]
-cmds = ['echo "Build completed"']
+cmds = ['npm run build']
 
 [start]
 cmd = 'npm start'
